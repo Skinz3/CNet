@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNet.Tests", "CNet.Tests\CNet.Tests.csproj", "{9B483630-5C7A-403E-A0FD-50FABD2AD478}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNet", "CNet\CNet.csproj", "{687291B5-2E97-4B4F-9B48-4ACE9845702F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B483630-5C7A-403E-A0FD-50FABD2AD478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B483630-5C7A-403E-A0FD-50FABD2AD478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B483630-5C7A-403E-A0FD-50FABD2AD478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B483630-5C7A-403E-A0FD-50FABD2AD478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{687291B5-2E97-4B4F-9B48-4ACE9845702F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{687291B5-2E97-4B4F-9B48-4ACE9845702F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{687291B5-2E97-4B4F-9B48-4ACE9845702F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{687291B5-2E97-4B4F-9B48-4ACE9845702F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F97A65DC-22DA-4D93-B075-E77C8957F662}
+	EndGlobalSection
+EndGlobal
