@@ -41,12 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Batch.cs" />
     <Compile Include="Exceptions\InvalidTensorShapeException.cs" />
-    <Compile Include="NN\Layer.cs" />
+    <Compile Include="NN\Layers\Layer.cs" />
+    <Compile Include="NN\Layers\StandardLayer.cs" />
     <Compile Include="NN\Neuron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Units\Shape.cs" />
     <Compile Include="Units\Tensor.cs" />
+    <Compile Include="Utils\TensorUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

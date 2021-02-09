@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CNet.Data;
+using CNet.NN;
+using CNet.NN.Layers;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -11,15 +14,25 @@ namespace CNet.Tests
     {
         static void Main(string[] args)
         {
-            Tensor inputs = new Tensor(1f, 2f, 3, 2.5f);
+            Batch batch = new Batch(new Tensor[]
+            {
+                 new Tensor(new float[][]
+                 {
+                     new float[] {1,2,3,4 },
+                      new float[] {1,2,3,4 }
+                 }),
+            });
 
-            Tensor weigth = new Tensor(0.2f, 0.8f, -0.5f, 1.0f);
+            Neuron n1 = new Neuron(new Tensor(0.2f, 0.8f, -0.5f, 1.0f), 2);
+            Neuron n2 = new Neuron(new Tensor(0.5f, -0.91f, 0.26f, -0.5f), 3);
+            Neuron n3 = new Neuron(new Tensor(-0.26f, -0.27f, 0.17f, 0.87f), 0.5f);
 
-            Neuron neuron = new Neuron(weigth, 2f);
+            Layer layer1 = new StandardLayer(n1, n2, n3);
 
+            Tensor results = layer1.Forward(batch);
 
-            float value = neuron.Compute(inputs);
-            Console.WriteLine(value);
+            Console.WriteLine(results);
+
             Console.ReadLine();
         }
     }

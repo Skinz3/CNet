@@ -18,14 +18,14 @@ namespace CNet.Units
             get;
             set;
         }
-        public Shape(int width, int heigth)
+        public Shape(int heigth, int width)
         {
             this.Width = width;
             this.Heigth = heigth;
         }
         public override string ToString()
         {
-            return "(" + Width + "," + Heigth + ")";
+            return "(" + Heigth + "," + Width + ")";
         }
 
         public static bool operator !=(Shape a, Shape b)

@@ -7,32 +7,36 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using CNet.Utils;
 
 namespace CNet
 {
     public class Tensor
     {
-        private const float DefaultValue = 0;
+        private const float DummyValue = 0;
 
-        private Shape shape;
+        public Shape Shape
+        {
+            get;
+        }
 
         private float[][] _matrix;
 
-        public Tensor(int width, int heigth)
+        public Tensor(int heigth, int width)
         {
-            _matrix = new float[width][];
+            _matrix = new float[heigth][];
 
-            for (int i = 0; i < width; i++)
+            for (int i = 0; i < heigth; i++)
             {
-                _matrix[i] = new float[heigth];
+                _matrix[i] = new float[width];
 
-                for (int j = 0; j < heigth; j++)
+                for (int j = 0; j < width; j++)
                 {
-                    _matrix[i][j] = DefaultValue;
+                    _matrix[i][j] = DummyValue;
                 }
             }
 
-            this.shape = new Shape(width, heigth);
+            this.Shape = new Shape(heigth, width);
         }
         public Tensor(params float[] array)
         {
@@ -43,9 +47,9 @@ namespace CNet
 
             this._matrix = new float[1][];
             this._matrix[0] = array;
-            this.shape = new Shape(1, array.Length);
+            this.Shape = new Shape(1, array.Length);
         }
-       
+
         public Tensor(float[][] array)
         {
             if (array == null || array.Length == 0)
@@ -62,25 +66,29 @@ namespace CNet
                 throw new InvalidTensorShapeException("Invalid matrix dimensions.");
             }
 
-            this.shape = new Shape(array.Length, length);
+            this.Shape = new Shape(array.Length, length);
         }
-        /// <summary>
+        /// <summary> 
         /// Apply a dot product. (CF numpy)
         /// </summary>
         public float Dot(Tensor other)
         {
-            if (shape != other.shape)
+            if (this.Shape.Heigth != 1)
             {
-                throw new ArgumentException("todo");
+                throw new ArgumentException("The first tensor must be unidimensional.");
+            }
+            if (this.Shape.Width != other.Shape.Width)
+            {
+                throw new ArgumentException("Both tensor must have same width.");
             }
 
             float result = 0;
 
-            for (int i = 0; i < shape.Width; i++)
+            for (int i = 0; i < this.Shape.Width; i++)
             {
-                for (int j = 0; j < shape.Heigth; j++)
+                for (int j = 0; j < other.Shape.Heigth; j++)
                 {
-                    result += this[i, j] * other[i, j];
+                    result += this[0, i] * other[j, i];
                 }
             }
 
@@ -100,7 +108,7 @@ namespace CNet
         }
         public override string ToString()
         {
-            return "Tensor " + shape.ToString();
+           return TensorUtils.GetString(this);
         }
     }
 }

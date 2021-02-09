@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNet.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,9 +26,14 @@ namespace CNet.NN
             this.Bias = bias;
         }
 
-        public float Compute(Tensor input)
+        public void Backward(Batch batch)
         {
-            return Weigth.Dot(input) + Bias;
+
+        }
+        public float Compute(Tensor tensor)
+        {
+            float value = Weigth.Dot(tensor) + Bias;
+            return (float)Math.Round(value, 3); // a voir
         }
     }
 }
