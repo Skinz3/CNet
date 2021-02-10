@@ -10,25 +10,25 @@ namespace CNet.Utils
     {
         public static string GetString(this Tensor tensor)
         {
-            int rowLength = tensor.Shape.Width;
-            int colLength = tensor.Shape.Heigth;
-
             StringBuilder builder = new StringBuilder();
 
             builder.Append("[");
 
-            for (int i = 0; i < rowLength; i++)
+            int width = tensor.Shape.Colomns;
+            int heigth = tensor.Shape.Rows;
+
+            for (int i = 0; i < heigth; i++)
             {
                 if (i > 0)
                 {
                     builder.Append(" ");
                 }
                 builder.Append("[");
-                for (int j = 0; j < colLength; j++)
+                for (int j = 0; j < width; j++)
                 {
-                    string value = tensor[j, i].ToString().Replace(",", ".");
+                    string value = tensor[i,j].ToString().Replace(",", ".");
 
-                    if (j < colLength - 1)
+                    if (j < width - 1)
                     {
                         value += " ";
                     }
@@ -41,7 +41,7 @@ namespace CNet.Utils
 
                 builder.Append("]");
 
-                if (i < rowLength - 1)
+                if (i < heigth - 1)
                 {
                     builder.AppendLine();
                 }

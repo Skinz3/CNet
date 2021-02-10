@@ -1,5 +1,4 @@
-﻿using CNet.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,30 +8,61 @@ namespace CNet.NN.Layers
 {
     public abstract class Layer
     {
-        protected List<Neuron> _neurons
+        public const float DefaultBias = 0;
+
+        private Neuron[] _neurons;
+
+        private int _inputLength;
+
+        public Layer(int inputLength, int neuronsCount)
         {
-            get;
-            set;
+            this._neurons = new Neuron[neuronsCount];
+            this._inputLength = inputLength;
+
+            Initialize();
         }
 
-        public Layer()
+        private void Initialize()
         {
-            this._neurons = new List<Neuron>();
-        }
-
-        public Tensor Forward(Batch batch)
-        {
-            Tensor result = new Tensor(_neurons.Count, batch.Inputs.Length);
-
-            for (int i = 0; i < _neurons.Count; i++)
+            for (int i = 0; i < _neurons.Length; i++)
             {
-                for (int j = 0; j < batch.Inputs.Length; j++)
+                _neurons[i] = new Neuron(_inputLength, DefaultBias);
+                _neurons[i].Initialize();
+            }
+        }
+
+        private Tensor BuildWeightTensor()
+        {
+            int width = _inputLength;
+
+            Tensor weights = new Tensor(_neurons.Length, width);
+
+            for (int i = 0; i < _neurons.Length; i++)
+            {
+                for (int j = 0; j < width; j++)
                 {
-                    result[i, j] = _neurons[i].Compute(batch.Inputs[j]);
+                    weights[i, j] = _neurons[i].Weigths[j];
                 }
             }
 
-            return result;
+            return weights;
         }
+        private Tensor BuildBiases()
+        {
+            return new Tensor(_neurons.Select(x => x.Bias).ToArray());
+        }
+
+        public Tensor Forward(Tensor inputs)
+        {
+            Tensor weights = BuildWeightTensor();
+
+            Tensor biases = BuildBiases();
+
+            Tensor transposed = weights.Transpose();
+
+            return inputs.Dot(transposed).VecSum(biases);
+        }
+
+
     }
 }

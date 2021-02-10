@@ -1,4 +1,4 @@
-﻿using CNet.Data;
+﻿using CNet.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace CNet.NN
 {
     public class Neuron
     {
-        public Tensor Weigth
+        public float[] Weigths
         {
             get;
-            set;
+            private set;
         }
         public float Bias
         {
@@ -20,20 +20,24 @@ namespace CNet.NN
             set;
         }
 
-        public Neuron(Tensor weigth, float bias)
+        public Neuron(int inputLength, float bias)
         {
-            this.Weigth = weigth;
+            this.Weigths = new float[inputLength];
             this.Bias = bias;
         }
-
-        public void Backward(Batch batch)
+        public Neuron(float[] weigths, float bias)
         {
-
+            this.Weigths = weigths;
+            this.Bias = bias;
         }
-        public float Compute(Tensor tensor)
+        public void Initialize()
         {
-            float value = Weigth.Dot(tensor) + Bias;
-            return (float)Math.Round(value, 3); // a voir
+            AsyncRandom random = new AsyncRandom();
+
+            for (int i = 0; i < Weigths.Length; i++)
+            {
+                Weigths[i] = RandomUtils.NormalRandom(0.3f) * 0.10f;
+            }
         }
     }
 }

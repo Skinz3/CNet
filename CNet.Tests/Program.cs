@@ -1,6 +1,6 @@
-﻿using CNet.Data;
-using CNet.NN;
+﻿using CNet.NN;
 using CNet.NN.Layers;
+using CNet.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
@@ -14,26 +14,24 @@ namespace CNet.Tests
     {
         static void Main(string[] args)
         {
-            Batch batch = new Batch(new Tensor[]
+
+            Tensor inputs = new Tensor(new float[][]
             {
-                 new Tensor(new float[][]
-                 {
-                     new float[] {1,2,3,4 },
-                      new float[] {1,2,3,4 }
-                 }),
+                   new float[] { 1, 2 , 3 , 2.5f },
+                   new float[] { 2.0f, 5.0f , -1.0f , 2.0f },
+                   new float[] { -1.5f, 2.7f , 3.3f , -0.8f },
             });
 
-            Neuron n1 = new Neuron(new Tensor(0.2f, 0.8f, -0.5f, 1.0f), 2);
-            Neuron n2 = new Neuron(new Tensor(0.5f, -0.91f, 0.26f, -0.5f), 3);
-            Neuron n3 = new Neuron(new Tensor(-0.26f, -0.27f, 0.17f, 0.87f), 0.5f);
 
-            Layer layer1 = new StandardLayer(n1, n2, n3);
+            Layer layer1 = new DenseLayer(4, 5);
+            Layer layer2 = new DenseLayer(5, 2);
 
-            Tensor results = layer1.Forward(batch);
+            Tensor rl1 = layer1.Forward(inputs);
+            Tensor rl2 = layer2.Forward(rl1);
 
-            Console.WriteLine(results);
+            Console.WriteLine(rl2); 
 
-            Console.ReadLine();
+          Console.ReadLine();
         }
     }
 }

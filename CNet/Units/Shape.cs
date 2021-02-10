@@ -8,24 +8,24 @@ namespace CNet.Units
 {
     public class Shape
     {
-        public int Width
+        public int Colomns
         {
             get;
             set;
         }
-        public int Heigth
+        public int Rows
         {
             get;
             set;
         }
-        public Shape(int heigth, int width)
+        public Shape(int rows, int colomns)
         {
-            this.Width = width;
-            this.Heigth = heigth;
+            this.Colomns = colomns;
+            this.Rows = rows;
         }
         public override string ToString()
         {
-            return "(" + Heigth + "," + Width + ")";
+            return "(" + Rows + "," + Colomns + ")";
         }
 
         public static bool operator !=(Shape a, Shape b)
@@ -34,7 +34,7 @@ namespace CNet.Units
         }
         public static bool operator ==(Shape a, Shape b)
         {
-            return a.Heigth == b.Heigth && a.Width == b.Width;
+            return a.Rows == b.Rows && a.Colomns == b.Colomns;
         }
 
         public override bool Equals(object obj)
@@ -43,7 +43,7 @@ namespace CNet.Units
 
             if (other != null)
             {
-                return other.Width == this.Width && other.Heigth == this.Heigth;
+                return other.Colomns == this.Colomns && other.Rows == this.Rows;
             }
             else
             {

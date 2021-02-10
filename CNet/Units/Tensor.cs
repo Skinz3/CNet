@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using CNet.Utils;
+using Accord.Math;
 
 namespace CNet
 {
@@ -20,24 +21,42 @@ namespace CNet
             get;
         }
 
+        public bool IsLineVector => Shape.Rows == 1;
+
+        public bool IsColomnVector => Shape.Colomns == 1;
+
+        public bool IsVector => IsLineVector || IsColomnVector;
+
         private float[][] _matrix;
 
-        public Tensor(int heigth, int width)
+        public Tensor(Shape shape) : this(shape.Rows, shape.Colomns)
         {
-            _matrix = new float[heigth][];
 
-            for (int i = 0; i < heigth; i++)
+        }
+        public Tensor(int rows, int colomns)
+        {
+            if (rows <= 0 || colomns <= 0)
             {
-                _matrix[i] = new float[width];
+                throw new ArgumentException("Cannot create a null matrix.");
+            }
 
-                for (int j = 0; j < width; j++)
+            _matrix = new float[rows][];
+
+            for (int i = 0; i < rows; i++)
+            {
+                _matrix[i] = new float[colomns];
+
+                for (int j = 0; j < colomns; j++)
                 {
                     _matrix[i][j] = DummyValue;
                 }
             }
 
-            this.Shape = new Shape(heigth, width);
+            this.Shape = new Shape(rows, colomns);
         }
+        /*
+         * Create a line vector.
+         */
         public Tensor(params float[] array)
         {
             if (array == null || array.Length == 0)
@@ -48,6 +67,21 @@ namespace CNet
             this._matrix = new float[1][];
             this._matrix[0] = array;
             this.Shape = new Shape(1, array.Length);
+        }
+
+        public Tensor Transpose()
+        {
+            Tensor result = new Tensor(Shape.Colomns, Shape.Rows);
+
+            for (int i = 0; i < Shape.Rows; i++)
+            {
+                for (int j = 0; j < Shape.Colomns; j++)
+                {
+                    result[j, i] = this[i, j];
+                }
+            }
+
+            return result;
         }
 
         public Tensor(float[][] array)
@@ -69,31 +103,61 @@ namespace CNet
             this.Shape = new Shape(array.Length, length);
         }
         /// <summary> 
-        /// Apply a dot product. (CF numpy)
+        /// this * other
+        /// Apply a dot product. 
+        /// This is naive dot implementation.
         /// </summary>
-        public float Dot(Tensor other)
+        public Tensor Dot(Tensor other)
         {
-            if (this.Shape.Heigth != 1)
+            if (this.Shape.Colomns != other.Shape.Rows)
             {
-                throw new ArgumentException("The first tensor must be unidimensional.");
-            }
-            if (this.Shape.Width != other.Shape.Width)
-            {
-                throw new ArgumentException("Both tensor must have same width.");
+                throw new ArgumentException("Cannot multiply matrix. Invalid shapes.");
             }
 
-            float result = 0;
+            Tensor result = new Tensor(this.Shape.Rows, other.Shape.Colomns);
 
-            for (int i = 0; i < this.Shape.Width; i++)
+            for (int i = 0; i < this.Shape.Rows; i++)
             {
-                for (int j = 0; j < other.Shape.Heigth; j++)
+                for (int j = 0; j < other.Shape.Colomns; j++)
                 {
-                    result += this[0, i] * other[j, i];
+                    for (int k = 0; k < this.Shape.Colomns; k++)
+                    {
+                        result[i, j] += this[i, k] * other[k, j];
+                    }
                 }
             }
 
             return result;
         }
+
+        public Tensor Sum(Tensor tensor)
+        {
+            Tensor result = new Tensor();
+
+            return result;
+        }
+        /*
+         * this (matrix) + vec (vector)
+         */
+        public Tensor VecSum(Tensor vec)
+        {
+            if (!vec.IsLineVector)
+            {
+                throw new ArgumentException("The parameter must be a line vector.");
+            }
+
+            Tensor result = new Tensor(this.Shape);
+
+            for (int i = 0; i < this.Shape.Rows; i++)
+            {
+                for (int j = 0; j < this.Shape.Colomns; j++)
+                {
+                    result[i, j] = this[i, j] + vec[0, j];
+                }
+            }
+            return result;
+        }
+
 
         public float this[int i, int j]
         {
@@ -108,7 +172,7 @@ namespace CNet
         }
         public override string ToString()
         {
-           return TensorUtils.GetString(this);
+            return TensorUtils.GetString(this);
         }
     }
 }
