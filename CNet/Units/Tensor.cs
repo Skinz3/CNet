@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using CNet.Utils;
-using Accord.Math;
 using System.Drawing;
 
 namespace CNet

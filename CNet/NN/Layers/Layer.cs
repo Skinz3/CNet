@@ -52,6 +52,10 @@ namespace CNet.NN.Layers
             return new Tensor(_neurons.Select(x => x.Bias).ToArray());
         }
 
+        public void Backward()
+        {
+
+        }
         public Tensor Forward(Tensor inputs)
         {
             Tensor weights = BuildWeightTensor();
@@ -60,7 +64,11 @@ namespace CNet.NN.Layers
 
             Tensor transposed = weights.Transpose();
 
-            return inputs.Dot(transposed).VecSum(biases);
+            Tensor result = inputs.Dot(transposed).VecSum(biases);
+
+            Activation.ReLU(result);
+
+            return result;
         }
 
 

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Data\TensorConverter.cs" />
     <Compile Include="Exceptions\InvalidTensorShapeException.cs" />
+    <Compile Include="NN\Activation.cs" />
     <Compile Include="NN\Layers\Layer.cs" />
     <Compile Include="NN\Layers\DenseLayer.cs" />
     <Compile Include="NN\Neuron.cs" />
