@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CNet.Utils;
 using Accord.Math;
+using System.Drawing;
 
 namespace CNet
 {
@@ -26,6 +27,8 @@ namespace CNet
         public bool IsColomnVector => Shape.Colomns == 1;
 
         public bool IsVector => IsLineVector || IsColomnVector;
+
+
 
         private float[][] _matrix;
 
@@ -130,12 +133,7 @@ namespace CNet
             return result;
         }
 
-        public Tensor Sum(Tensor tensor)
-        {
-            Tensor result = new Tensor();
 
-            return result;
-        }
         /*
          * this (matrix) + vec (vector)
          */
@@ -157,7 +155,14 @@ namespace CNet
             }
             return result;
         }
-
+        public void SetRow(int i, float[] row)
+        {
+            _matrix[i] = row;
+        }
+        public float[] GetRow(int i)
+        {
+            return _matrix[i];
+        }
 
         public float this[int i, int j]
         {
