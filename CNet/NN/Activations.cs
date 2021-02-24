@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace CNet.NN
 {
-    public class Activation
+    public class Activations
     {
-        public static float Sigmoid(float x)
+        public static void Softmax(Tensor tensor)
         {
-            return 1f / (1 + (float)Math.Exp(-x));
+            for (int i = 0; i < tensor.Shape.Rows; i++)
+            {
+                var z_exp = tensor.GetRow(i).Select(x => Math.Exp(x));
+
+                var sum_z_exp = z_exp.Sum();
+
+                var softmax = z_exp.Select(v => (float)(v / sum_z_exp)).ToArray();
+
+                tensor.SetRow(i, softmax);
+            }
         }
         public static void ReLU(Tensor tensor)
         {
@@ -21,6 +30,10 @@ namespace CNet.NN
                     tensor[i, j] = ReLU(tensor[i, j]);
                 }
             }
+        }
+        public static float Sigmoid(float x)
+        {
+            return 1f / (1 + (float)Math.Exp(-x));
         }
         public static float ReLU(float x)
         {

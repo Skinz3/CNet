@@ -14,10 +14,13 @@ namespace CNet.NN.Layers
 
         private int _inputLength;
 
-        public Layer(int inputLength, int neuronsCount)
+        private ActivationType _activation;
+
+        public Layer(int inputLength, int neuronsCount, ActivationType activationType)
         {
             this._neurons = new Neuron[neuronsCount];
             this._inputLength = inputLength;
+            this._activation = activationType;
 
             Initialize();
         }
@@ -66,7 +69,16 @@ namespace CNet.NN.Layers
 
             Tensor result = inputs.Dot(transposed).VecSum(biases);
 
-            Activation.ReLU(result);
+            switch (_activation)
+            {
+                case ActivationType.ReLU:
+                    Activations.ReLU(result);
+                    break;
+                case ActivationType.Softmax:
+                    Activations.Softmax(result);
+                    break;
+
+            }
 
             return result;
         }

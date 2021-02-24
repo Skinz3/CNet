@@ -10,31 +10,44 @@ namespace CNet.Data
 {
     public class TensorConverter
     {
-        public static Tensor InputsFromImage(string path)
+        public static List<Tensor> InputsFromImage(string path, int batchSize = 10)
         {
             int size = 28 * 28;
 
             var files = Directory.GetFiles(path);
 
-            Tensor result = new Tensor(files.Length, size);
+            List<Tensor> results = new List<Tensor>();
+
 
             int i = 0;
 
+            Tensor current = new Tensor(batchSize, size);
+
             foreach (var file in files)
             {
-                Bitmap bitmap = (Bitmap)Image.FromFile(file);
+                if (i % batchSize != 0)
+                {
+                    Bitmap bitmap = (Bitmap)Image.FromFile(file);
 
-                result.SetRow(i, FromBitmap(bitmap));
+                    current.SetRow(i % batchSize, FromBitmap(bitmap));
 
-                bitmap.Dispose();
+                    bitmap.Dispose();
+
+
+                }
+                else
+                {
+                    results.Add(current);
+                    current = new Tensor(batchSize, size);
+                }
 
                 i++;
             }
 
-            return result;
+            return results;
 
         }
-        
+
         public static float[] FromBitmap(Bitmap bitmap)
         {
             float[] result = new float[bitmap.Width * bitmap.Height];
@@ -47,13 +60,18 @@ namespace CNet.Data
                 {
                     var pixel = bitmap.GetPixel(i, j);
 
-                    float r = (float)pixel.R / byte.MaxValue;
-                    float g = (float)pixel.G / byte.MaxValue;
-                    float b = (float)pixel.B / byte.MaxValue;
+                    float value = (float)(pixel.R + pixel.G + pixel.B) / 3f;
 
-                    result[k] = (r + g + b / 3f);
+                    float valueNormalized = value / 255;
+
+                    result[k] = valueNormalized;
                     k++;
                 }
+            }
+
+            if (result.All(x => x == 0))
+            {
+
             }
 
             return result;

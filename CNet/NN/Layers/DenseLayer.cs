@@ -8,9 +8,10 @@ namespace CNet.NN.Layers
 {
     public class DenseLayer : Layer
     {
-        public DenseLayer(int inputsLength, int neuronsCount) : base(inputsLength, neuronsCount)
-        {   
-                
-        }   
+        public DenseLayer(int inputsLength, int neuronsCount, ActivationType activationType) :
+            base(inputsLength, neuronsCount, activationType)
+        {
+
+        }
     }
 }

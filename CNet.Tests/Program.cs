@@ -14,25 +14,29 @@ namespace CNet.Tests
 {
     class Program
     {
-        static void Main(string[] args)
+        static void FromImageBatches()
         {
-            Tensor inputs = new Tensor(new float[][]
+            List<Tensor> inputs = TensorConverter.InputsFromImage("Test/");
+
+            Layer layer1 = new DenseLayer(28 * 28, 64, ActivationType.Softmax);
+
+            Layer layer2 = new DenseLayer(64, 10, ActivationType.ReLU);
+
+            foreach (var input in inputs)
             {
-                   new float[] { 1, 2 , 3 , 2.5f },
-                   new float[] { 2.0f, 5.0f , -1.0f , 2.0f },
-                   new float[] { -1.5f, 2.7f , 3.3f , -0.8f },
-            });
+                Tensor rl1 = layer1.Forward(input);
 
-            Layer layer1 = new DenseLayer(4, 5);
-            Layer layer2 = new DenseLayer(5, 2);
+                Tensor rl2 = layer2.Forward(rl1);
 
-            Tensor rl1 = layer1.Forward(inputs);
+                Console.WriteLine(rl2);
+            }
 
-            Tensor rl2 = layer2.Forward(rl1);
-
-            Console.WriteLine(rl2);
 
             Console.ReadLine();
+        }
+        static void Main(string[] args)
+        {
+         
         }
     }
 }

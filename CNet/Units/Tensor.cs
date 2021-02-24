@@ -35,6 +35,12 @@ namespace CNet
         {
 
         }
+        public Tensor(int length)
+        {
+            this._matrix = new float[1][];
+            this._matrix[0] = new float[length];
+            this.Shape = new Shape(1, length);
+        }
         public Tensor(int rows, int colomns)
         {
             if (rows <= 0 || colomns <= 0)
