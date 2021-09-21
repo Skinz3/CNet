@@ -34,9 +34,49 @@ namespace CNet.Tests
 
             Console.ReadLine();
         }
+        static float log2_series(float n)
+        {
+            float result = 0;
+
+            for (float i = 1; i <= n; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    result += 1f / i;
+                }
+                else
+                {
+                    result -= 1f / i;
+                }
+            }
+
+            return result;
+        }
+
+        static float log2_series_reversed(float n)
+        {
+            float result = 0;
+
+            for (float i = n; i > 0; i--)
+            {
+                if (i % 2 == 0)
+                {
+                    result += 1f / i;
+                }
+                else
+                {
+                    result -= 1f / i;
+                }
+            }
+
+            return result;
+        }
         static void Main(string[] args)
         {
-         
+            Console.WriteLine(log2_series(4));
+            Console.WriteLine(log2_series_reversed(4));
+            Console.ReadLine();
+            FromImageBatches();
         }
     }
 }
